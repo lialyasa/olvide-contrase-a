@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <link rel="stylesheet" href="css\estilo1.css">
+    <script>
+        function validarContraseña() {
+            const contraseñaIngresada = document.getElementById('contraseña').value;
+            const emailIngresado = document.getElementById('email').value;
+            const contraseñaCorrecta = sessionStorage.getItem('contraseñaGenerada');
+            const emailCorrecto = sessionStorage.getItem('emailGenerado');
+            const errorMsg = document.getElementById('error-msg');
+
+            if (contraseñaIngresada !== contraseñaCorrecta || emailIngresado !== emailCorrecto) {
+                errorMsg.textContent = 'Email o contraseña incorrecta. Inténtalo nuevamente.';
+                return false;
+            } else {
+                errorMsg.textContent = '';
+                mostrarBienvenida();
+                return true;
+            }
+        }
+
+        function enviarFormulario(event) {
+            if (!validarContraseña()) {
+                event.preventDefault();
+            }
+        }
+
+        function mostrarBienvenida() {
+            document.body.innerHTML = '<h1>Bienvenido</h1>';
+        }
+    </script>
+</head>
+<body>
+    <h1>Página Principal</h1>
+    <form onsubmit="enviarFormulario(event)">
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="contraseña">Contraseña:</label><br>
+        <input type="password" id="contraseña" name="contraseña" required><br>
+        <span id="error-msg" style="color: red;"></span><br><br>
+
+        <input type="submit" value="Registrarse">
+    </form>
+    <a href="contraseña.html">¿Olvidaste tu contraseña?</a><br>
+    <a href="cuenta.html">Crear cuenta</a>
+</body>
+</html>

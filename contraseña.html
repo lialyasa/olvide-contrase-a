@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar y Cambiar Contraseña</title>
+    <link rel="stylesheet" href="css\estilo3.css">
+    <script>
+        function validarCondicionesContraseña(contraseña) {
+            const longitud = contraseña.length >= 8;
+            const mayuscula = /[A-Z]/.test(contraseña);
+            const numero = /\d/.test(contraseña);
+            const caracterEspecial = /[!@#$%^&*(),.?´`+¡'":{}|<>]/.test(contraseña);
+            return longitud && mayuscula && numero && caracterEspecial;
+        }
+
+        function validarNuevaContraseña() {
+            const nuevaContraseña = document.getElementById('nuevaContraseña').value;
+            const nuevoValidMsg = document.getElementById('nuevo-valid-msg');
+
+            if (validarCondicionesContraseña(nuevaContraseña)) {
+                nuevoValidMsg.textContent = 'Contraseña válida.';
+                nuevoValidMsg.style.color = 'green';
+            } else {
+                nuevoValidMsg.textContent = 'Contraseña no válida.';
+                nuevoValidMsg.style.color = 'red';
+            }
+        }
+
+        function guardarNuevaContraseña() {
+            const nuevaContraseña = document.getElementById('nuevaContraseña').value;
+            const nuevoEmail = document.getElementById('nuevoEmail').value;
+            const nuevoValidMsg = document.getElementById('nuevo-valid-msg');
+
+            if (validarCondicionesContraseña(nuevaContraseña) && nuevoEmail === sessionStorage.getItem('emailGenerado')) {
+                sessionStorage.setItem('contraseñaGenerada', nuevaContraseña);
+                nuevoValidMsg.textContent = 'Contraseña cambiada exitosamente.';
+                nuevoValidMsg.style.color = 'green';
+            } else {
+                nuevoValidMsg.textContent = 'Email o contraseña no válida.';
+                nuevoValidMsg.style.color = 'red';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Recuperar y Cambiar Contraseña</h1>
+    <form onsubmit="guardarNuevaContraseña(); event.preventDefault();">
+        <label for="nuevoEmail">Email:</label><br>
+        <input type="email" id="nuevoEmail" name="nuevoEmail" required><br><br>
+
+        <label for="nuevaContraseña">Nueva Contraseña:</label><br>
+        <input type="password" id="nuevaContraseña" name="nuevaContraseña" required oninput="validarNuevaContraseña()"><br>
+        <span id="nuevo-valid-msg"></span><br><br>
+
+        <input type="submit" value="Cambiar Contraseña">
+    </form>
+    <a href="index.html">Iniciar sesion</a>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta</title>
+    <link rel="stylesheet" href="css\estilo2.css">
+    <script>
+        function generarEmail() {
+            const apellido = document.getElementById('apellido').value;
+            const nombre = document.getElementById('nombre').value;
+            
+            if (apellido && nombre) {
+                const email = apellido.charAt(0) +
+                            nombre.charAt(1) + nombre.charAt(2) +
+                            apellido.slice(-2) +
+                            nombre.slice(-4) +
+                            '@gmail.com';
+
+                document.getElementById('emailGenerado').value = email;
+                sessionStorage.setItem('emailGenerado', email);
+            }
+        }
+
+        function guardarContraseña() {
+            const contraseña = document.getElementById('contraseñaGenerada').value;
+            const validMsg = document.getElementById('valid-msg');
+
+            if (validarCondicionesContraseña(contraseña)) {
+                sessionStorage.setItem('contraseñaGenerada', contraseña);
+                validMsg.textContent = 'Contraseña válida.';
+                validMsg.style.color = 'green';
+            } else {
+                validMsg.textContent = 'Contraseña no válida.';
+                validMsg.style.color = 'red';
+            }
+        }
+
+        function validarCondicionesContraseña(contraseña) {
+            const longitud = contraseña.length >= 8;
+            const mayuscula = /[A-Z]/.test(contraseña);
+            const numero = /\d/.test(contraseña);
+            const caracterEspecial = /[!@#$%^&*(),.?´`+¡'":{}|<>]/.test(contraseña);
+            return longitud && mayuscula && numero && caracterEspecial;
+        }
+
+        function guardarDatos() {
+            const emailGenerado = document.getElementById('emailGenerado').value;
+            const contraseñaGenerada = document.getElementById('contraseñaGenerada').value;
+
+            if (emailGenerado && contraseñaGenerada) {
+                sessionStorage.setItem('emailGenerado', emailGenerado);
+                sessionStorage.setItem('contraseñaGenerada', contraseñaGenerada);
+                alert('Datos guardados exitosamente.');
+            } else {
+                alert('Genera el correo y la contraseña antes de guardar.');
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Crear Cuenta</h1>
+    <form onsubmit="event.preventDefault();">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+
+        <label for="apellido">Apellido:</label><br>
+        <input type="text" id="apellido" name="apellido" required><br><br>
+
+        <label for="emailGenerado">Gmail generado:</label><br>
+        <input type="email" id="emailGenerado" name="emailGenerado" readonly><br><br>
+
+        <label for="contraseñaGenerada">Contraseña:</label><br>
+        <input type="password" id="contraseñaGenerada" name="contraseñaGenerada" required oninput="guardarContraseña()"><br>
+        <span id="valid-msg"></span><br><br>
+
+        <input type="button" value="Generar" onclick="generarEmail()">
+        <input type="button" value="Guardar Datos" onclick="guardarDatos()">
+    </form>
+</body>
+</html>
